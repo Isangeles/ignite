@@ -1,0 +1,24 @@
+.TH .ignite
+.SH NAME
+\[char46]ignite - file for AI program configuration.
+.SH DESCRIPTION
+This file contains configuration values for the AI client.
+.br
+The configuration file is loaded by the on program startup.
+.SH VALUES
+.P
+* server
+.br
+Value for game server host and port.
+.br
+First value is used as server host, second as server port.
+.P
+* user
+.br
+Value for game server user ID and password.
+.br
+First value is used as user ID, second as user password.
+.SH EXAMPLE
+.nf
+server:localhost;8000
+user:u1;asd!

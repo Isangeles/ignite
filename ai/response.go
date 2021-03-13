@@ -21,12 +21,12 @@
  *
  */
 
-package game
+package ai
 
 import (
 	"log"
 	
-	flameres "github.com/isangeles/flame/data/res"
+	"github.com/isangeles/flame/data/res"
 
 	"github.com/isangeles/fire/response"
 )
@@ -58,6 +58,6 @@ func (g *Game) handleNewCharResponse(resp []response.NewChar) {
 
 // handleUpdateRespone handles update response.
 func (g *Game) handleUpdateResponse(resp response.Update) {
-	flameres.Clear()
+	res.Clear()
 	g.Module().Apply(resp.Module)
 }

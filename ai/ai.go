@@ -21,7 +21,7 @@
  *
  */
 
-// ai package provides AI struct for controling Fire
+// ai package provides AI structs for controling
 // module characters.
 package ai
 
@@ -32,8 +32,6 @@ import (
 	"github.com/isangeles/flame/module/effect"
 	"github.com/isangeles/flame/module/skill"
 	"github.com/isangeles/flame/rng"
-
-	"github.com/isangeles/ignite/game"
 )
 
 var (
@@ -44,13 +42,13 @@ var (
 
 // Struct for controlling non-player characters.
 type AI struct {
-	game      *game.Game
+	game      *Game
 	moveTimer int64
 	chatTimer int64
 }
 
 // New creates new AI for specified game.
-func New(g *game.Game) *AI {
+func New(g *Game) *AI {
 	ai := new(AI)
 	ai.game = g
 	return ai
@@ -60,8 +58,6 @@ func New(g *game.Game) *AI {
 func (ai *AI) Update(delta int64) {
 	ai.moveTimer += delta
 	ai.chatTimer += delta
-	// Game.
-	ai.game.Update(delta)
 	// NPCs.
 	for _, npc := range ai.Game().Characters() {
 		// Move around.
@@ -125,12 +121,12 @@ func (ai *AI) Update(delta int64) {
 }
 
 // Game returns AI game.
-func (ai *AI) Game() *game.Game {
+func (ai *AI) Game() *Game {
 	return ai.game
 }
 
 // moveAround moves specified character in random direction.
-func (ai *AI) moveAround(npc *game.Character) {
+func (ai *AI) moveAround(npc *Character) {
 	dir := rng.RollInt(1, 4)
 	posX, posY := npc.Position()
 	switch dir {
@@ -147,7 +143,7 @@ func (ai *AI) moveAround(npc *game.Character) {
 }
 
 // saySomething sends random text on NPC chat channel.
-func (ai *AI) saySomething(npc *game.Character) {
+func (ai *AI) saySomething(npc *Character) {
 	if npc.Race() == nil {
 		return
 	}
@@ -157,7 +153,7 @@ func (ai *AI) saySomething(npc *game.Character) {
 
 // combatSkill selects NPC skill to use in combat or nil if specified
 // NPC has no skills to use.
-func (ai *AI) combatSkill(npc *game.Character, tar effect.Target) *skill.Skill {
+func (ai *AI) combatSkill(npc *Character, tar effect.Target) *skill.Skill {
 	if len(npc.Skills()) < 1 {
 		return nil
 	}

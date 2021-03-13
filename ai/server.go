@@ -21,7 +21,7 @@
  *
  */
 
-package game
+package ai
 
 import (
 	"bufio"

@@ -21,8 +21,7 @@
  *
  */
 
-// Package with interface wrapper for game.
-package game
+package ai
 
 import (
 	"log"
@@ -38,8 +37,8 @@ type Game struct {
 	onLoginFunc func(g *Game)
 }
 
-// New creates new game wrapper for specified game.
-func New(game *flame.Game) *Game {
+// NewGame creates new AI game wrapper for specified game.
+func NewGame(game *flame.Game) *Game {
 	g := Game{Game: game}
 	return &g
 }

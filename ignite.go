@@ -39,12 +39,11 @@ import (
 	
 	"github.com/isangeles/ignite/ai"
 	"github.com/isangeles/ignite/config"
-	"github.com/isangeles/ignite/game"
 )
 
 var (
-	charsAI *ai.AI
-	server  *game.Server
+	AI *ai.AI
+	server  *ai.Server
 )
 
 // Main function.
@@ -56,7 +55,7 @@ func main() {
 		panic(fmt.Errorf("Unable to load config: %v", err))
 	}
 	// Connect to the server.
-	serv, err := game.NewServer(config.ServerHost, config.ServerPort)
+	serv, err := ai.NewServer(config.ServerHost, config.ServerPort)
 	if err != nil {
 		panic(fmt.Errorf("Unable to create game server connection: %v",
 			err))
@@ -75,10 +74,11 @@ func main() {
 		dtNano := time.Since(update).Nanoseconds()
 		delta := dtNano / int64(time.Millisecond) // delta to milliseconds
 		// Update.
-		if charsAI == nil {
+		if AI == nil {
 			continue
 		}
-		charsAI.Update(delta)
+		AI.Update(delta)
+		AI.Game().Update(delta)
 		update = time.Now()
 		time.Sleep(time.Duration(16) * time.Millisecond)
 	}
@@ -102,20 +102,20 @@ func handleUpdateResponse(resp response.Update) {
 	flameres.Clear()
 	mod := module.New()
 	mod.Apply(resp.Module)
-	game := game.New(flame.NewGame(mod))
+	game := ai.NewGame(flame.NewGame(mod))
 	game.SetServer(server)
-	charsAI = ai.New(game)
+	AI = ai.New(game)
 }
 
 // handleNewCharResponse handlres new character response from the server.
 func handleNewCharResponse(resp response.NewChar) {
-	if charsAI == nil {
+	if AI == nil {
 		return
 	}
-	for _, c := range charsAI.Game().Module().Chapter().Characters() {
+	for _, c := range AI.Game().Module().Chapter().Characters() {
 		if resp.ID == c.ID() && resp.Serial == c.Serial() {
-			aiChar := game.NewCharacter(c, charsAI.Game())
-			charsAI.Game().AddCharacter(aiChar)
+			aiChar := ai.NewCharacter(c, AI.Game())
+			AI.Game().AddCharacter(aiChar)
 		}
 	}
 }

@@ -21,7 +21,7 @@
  *
  */
 
-package game
+package ai
 
 import (
 	"log"
@@ -68,11 +68,11 @@ func (c *Character) SetDestPoint(x, y float64) {
 
 // AddChatMessage adds new message to character chat log.
 func (c *Character) AddChatMessage(message string) {
-	c.ChatLog().Add(objects.Message{Translated: true, Text: message})
+	c.ChatLog().Add(objects.Message{Text: message})
 	if c.game.Server() == nil {
 		return
 	}
-	chatReq := request.Chat{c.ID(), c.Serial(), message}
+	chatReq := request.Chat{c.ID(), c.Serial(), message, false}
 	req := request.Request{Chat: []request.Chat{chatReq}}
 	err := c.game.Server().Send(req)
 	if err != nil {

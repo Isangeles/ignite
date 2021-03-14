@@ -1,0 +1,32 @@
+.TH Configuration
+.SH DESCRIPTION
+Configuration for the AI program is stored in a .ignite file loaded from the program executable directory.
+.br
+The configuration file is loaded by the program on startup.
+.SH VALUES
+.P
+* server
+.br
+Value for game server host and port.
+.br
+First value is used as server host, second as server port.
+.P
+* user
+.br
+Value for game server user ID and password.
+.br
+First value is used as user ID, second as user password.
+.P
+* move-freq
+.br
+Value for AI random move frequency in milliseconds, 3000 by default.
+.P
+* char-freq
+.br
+Value for AI random chat frequency in milliseconds, 5000 by default.
+.SH EXAMPLE
+.nf
+server:localhost;8000
+user:u1;asd!
+move-freq:3000
+chat-freq:5000

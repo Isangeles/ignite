@@ -24,7 +24,7 @@ Run program:
 ```
 After this, the program should establish a connection with the game server and control game characters assigned to the AI user by the server.
 ## Configuration
-Configuration is stored in `.ignite` file placed in the executable directory.
+Configuration is stored in `.ignite` file placed in the program executable directory.
 ### Configuration values:
 ```
 server:[address];[port]
@@ -34,6 +34,14 @@ Value for game server host and port.
 user:[user ID];[password]
 ```
 Value for game server user ID and password.
+```
+move-freq:[milliseconds]
+```
+Value for AI random move frequency in milliseconds, 3000 by default.
+```
+char-freq:[milliseconds]
+```
+Value for AI random chat frequency in milliseconds, 5000 by default.
 ## Documentation
 Source code documentation could be easily browsed with the `go doc` command.
 
@@ -41,9 +49,9 @@ Besides that `doc` directory contains some useful documentation pages.
 
 Documentation pages are in Troff format and could be easily displayed with `man` command.
 
-For example to display documentation page for `.ignite` configuration file:
+For example to display documentation page for the AI configuration:
 ```
-man doc/config/.ignite
+man doc/config
 ```
 ## Contributing
 You are welcome to contribute to project development.

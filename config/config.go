@@ -27,6 +27,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/isangeles/flame/data/text"
 )
@@ -37,10 +38,14 @@ const (
 )
 
 var (
-	ServerHost  = ""
-	ServerPort  = ""
-	UserID      = ""
-	UserPass    = ""
+	// Server.
+	ServerHost = ""
+	ServerPort = ""
+	UserID     = ""
+	UserPass   = ""
+	// Random actions frequences(in millis).
+	MoveFreq int64 = 3000
+	ChatFreq int64 = 5000
 )
 
 // Load load server configuration file.
@@ -63,6 +68,18 @@ func Load() error {
 	if len(conf["user"]) > 1 {
 		UserID = conf["user"][0]
 		UserPass = conf["user"][1]
+	}
+	if len(conf["move-freq"]) > 0 {
+		moveFreq, err := strconv.ParseInt(conf["move-freq"][0], 0, 64)
+		if err == nil {
+			MoveFreq = moveFreq
+		}
+	}
+	if len(conf["chat-freq"]) > 0 {
+		chatFreq, err := strconv.ParseInt(conf["chat-freq"][0], 0, 64)
+		if err == nil {
+			ChatFreq = chatFreq
+		}
 	}
 	return nil
 }

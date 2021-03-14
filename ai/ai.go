@@ -32,12 +32,8 @@ import (
 	"github.com/isangeles/flame/module/effect"
 	"github.com/isangeles/flame/module/skill"
 	"github.com/isangeles/flame/rng"
-)
 
-var (
-	// Random actions frequences(in millis).
-	moveFreq int64 = 3000
-	chatFreq int64 = 5000
+	"github.com/isangeles/ignite/config"
 )
 
 // Struct for controlling non-player characters.
@@ -61,7 +57,7 @@ func (ai *AI) Update(delta int64) {
 	// NPCs.
 	for _, npc := range ai.Game().Characters() {
 		// Move around.
-		if ai.moveTimer >= moveFreq {
+		if ai.moveTimer >= config.MoveFreq {
 			if npc.Casted() != nil || npc.Moving() || npc.Fighting() || npc.Agony() {
 				continue
 			}
@@ -74,7 +70,7 @@ func (ai *AI) Update(delta int64) {
 			ai.moveAround(npc)
 		}
 		// Random chat.
-		if ai.chatTimer >= chatFreq {
+		if ai.chatTimer >= config.ChatFreq {
 			if npc.Casted() != nil || npc.Moving() || npc.Fighting() || npc.Agony() {
 				continue
 			}
@@ -112,10 +108,10 @@ func (ai *AI) Update(delta int64) {
 		break
 	}
 	// Reset timers.
-	if ai.moveTimer >= moveFreq {
+	if ai.moveTimer >= config.MoveFreq {
 		ai.moveTimer = 0
 	}
-	if ai.chatTimer >= chatFreq {
+	if ai.chatTimer >= config.ChatFreq {
 		ai.chatTimer = 0
 	}
 }

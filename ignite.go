@@ -21,46 +21,44 @@
  *
  */
 
-// main package loads configuration, connects to the game server,
-// and starts AI process.
+// main package starts the AI process.
 package main
 
 import (
 	"fmt"
-	"time"
 	"log"
-	
+	"time"
+
 	"github.com/isangeles/flame"
-	flameres "github.com/isangeles/flame/data/res"
+	"github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/module"
 
-	"github.com/isangeles/fire/response"
 	"github.com/isangeles/fire/request"
-	
+	"github.com/isangeles/fire/response"
+
 	"github.com/isangeles/ignite/ai"
 	"github.com/isangeles/ignite/config"
 )
 
 var (
-	AI *ai.AI
-	server  *ai.Server
+	AI     *ai.AI
+	server *ai.Server
 )
 
 // Main function.
 func main() {
-	fmt.Printf("*%s(%s)*\n", config.Name, config.Version)
+	log.Printf("%s(%s)", config.Name, config.Version)
 	// Load config.
 	err := config.Load()
 	if err != nil {
 		panic(fmt.Errorf("Unable to load config: %v", err))
 	}
 	// Connect to the server.
-	serv, err := ai.NewServer(config.ServerHost, config.ServerPort)
+	server, err = ai.NewServer(config.ServerHost, config.ServerPort)
 	if err != nil {
 		panic(fmt.Errorf("Unable to create game server connection: %v",
 			err))
 	}
-	server = serv
 	server.SetOnResponseFunc(handleResponse)
 	// Login to the server.
 	loginReq := request.Login{config.UserID, config.UserPass}
@@ -80,11 +78,12 @@ func main() {
 		AI.Update(delta)
 		AI.Game().Update(delta)
 		update = time.Now()
+		// Update break.
 		time.Sleep(time.Duration(16) * time.Millisecond)
 	}
 }
 
-// handleResponse handles response from the Fire server.
+// handleResponse handles response from the server.
 func handleResponse(resp response.Response) {
 	if !resp.Logon {
 		handleUpdateResponse(resp.Update)
@@ -99,7 +98,10 @@ func handleResponse(resp response.Response) {
 
 // handleUpdateResponse handles update response from the server.
 func handleUpdateResponse(resp response.Update) {
-	flameres.Clear()
+	if AI != nil {
+		return
+	}
+	res.Clear()
 	mod := module.New()
 	mod.Apply(resp.Module)
 	game := ai.NewGame(flame.NewGame(mod))

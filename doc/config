@@ -21,7 +21,7 @@ First value is used as user ID, second as user password.
 .br
 Value for AI random move frequency in milliseconds, 3000 by default.
 .P
-* char-freq
+* chat-freq
 .br
 Value for AI random chat frequency in milliseconds, 5000 by default.
 .SH EXAMPLE

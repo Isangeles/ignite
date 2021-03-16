@@ -39,7 +39,7 @@ move-freq:[milliseconds]
 ```
 Value for AI random move frequency in milliseconds, 3000 by default.
 ```
-char-freq:[milliseconds]
+chat-freq:[milliseconds]
 ```
 Value for AI random chat frequency in milliseconds, 5000 by default.
 ## Documentation

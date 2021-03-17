@@ -24,10 +24,13 @@
 package ai
 
 import (
+	"fmt"
 	"log"
-	
-	"github.com/isangeles/flame/data/res"
 
+	"github.com/isangeles/flame/data/res"
+	"github.com/isangeles/flame/module/character"
+
+	"github.com/isangeles/fire/request"
 	"github.com/isangeles/fire/response"
 )
 
@@ -38,21 +41,15 @@ func (g *Game) handleResponse(resp response.Response) {
 	}
 	g.handleUpdateResponse(resp.Update)
 	g.handleNewCharResponse(resp.NewChar)
+	for _, r := range resp.Trade {
+		err := g.handleTradeResponse(r)
+		if err != nil {
+			log.Printf("Game server: unable to handle trade response: %v",
+				err)
+		}
+	}
 	for _, r := range resp.Error {
 		log.Printf("Game server error: %s", r)
-	}
-}
-
-// handleNewCharResponse handles new characters from server response.
-func (g *Game) handleNewCharResponse(resp []response.NewChar) {
-	for _, r := range resp {
-		char := g.Module().Chapter().Character(r.ID, r.Serial)
-		if char == nil {
-			log.Printf("Game server: handle new-char response: unable to find character in module: %s %s",
-				r.ID, r.Serial)
-			return
-		}
-		g.AddCharacter(NewCharacter(char, g))
 	}
 }
 
@@ -60,4 +57,70 @@ func (g *Game) handleNewCharResponse(resp []response.NewChar) {
 func (g *Game) handleUpdateResponse(resp response.Update) {
 	res.Clear()
 	g.Module().Apply(resp.Module)
+}
+
+// handleNewCharResponse handles new characters response from the server.
+func (g *Game) handleNewCharResponse(resp []response.NewChar) {
+	for _, r := range resp {
+		char := g.Module().Chapter().Character(r.ID, r.Serial)
+		if char == nil {
+			log.Printf("Game server: handle new-char response: unable to find character in module: %s %s",
+				r.ID, r.Serial)
+		}
+		g.AddCharacter(NewCharacter(char, g))
+	}
+}
+
+// handleTradeResponse handles trade response from the server.
+func (g *Game) handleTradeResponse(resp response.Trade) error {
+	// Find seller & buyer.
+	object := g.Module().Object(resp.SellerID, resp.SellerSerial)
+	if object == nil {
+		return fmt.Errorf("Seller not found: %s %s", resp.SellerID,
+			resp.SellerSerial)
+	}
+	seller, ok := object.(*character.Character)
+	if !ok {
+		return fmt.Errorf("Seller is not a character: %s %s", resp.SellerID,
+			resp.SellerSerial)
+	}
+	object = g.Module().Object(resp.BuyerID, resp.BuyerSerial)
+	if object == nil {
+		return fmt.Errorf("Buyer not found: %s %s", resp.BuyerID,
+			resp.BuyerSerial)
+	}
+	buyer, ok := object.(*character.Character)
+	if !ok {
+		return fmt.Errorf("Buyer is not a character: %s %s", resp.BuyerID,
+			resp.BuyerSerial)
+	}
+	// Validate trade.
+	buyValue := 0
+	for id, serials := range resp.ItemsBuy {
+		for _, serial := range serials {
+			it := seller.Inventory().Item(id, serial)
+			if it != nil {
+				buyValue += it.Value()
+			}
+		}
+	}
+	sellValue := 0
+	for id, serials := range resp.ItemsSell {
+		for _, serial := range serials {
+			it := buyer.Inventory().Item(id, serial)
+			if it != nil {
+				sellValue += it.Value()
+			}
+		}
+	}
+	if sellValue < buyValue {
+		return nil
+	}
+	// Send accept request.
+	req := request.Request{Accept: []int{resp.ID}}
+	err := g.Server().Send(req)
+	if err != nil {
+		return fmt.Errorf("Unable to send accept request: %v", err)
+	}
+	return nil
 }

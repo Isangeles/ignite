@@ -1,0 +1,11 @@
+MAJOR:
+* AI: selecting skills proper to the situation
+MINOR:
+* package with API usage examples
+DONE:
+* AI: random move
+* AI: random chat
+* AI: attacking chars with aggressive attitude
+* Connecting to the server and updating AI game
+* Configuration package
+* Communication with the game server

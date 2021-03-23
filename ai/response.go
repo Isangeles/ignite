@@ -40,7 +40,9 @@ func (g *Game) handleResponse(resp response.Response) {
 		g.onLoginFunc(g)
 	}
 	g.handleUpdateResponse(resp.Update)
-	g.handleNewCharResponse(resp.NewChar)
+	for _, r := range resp.Character {
+		g.handleCharacterResponse(r)
+	}
 	for _, r := range resp.Trade {
 		err := g.handleTradeResponse(r)
 		if err != nil {
@@ -59,16 +61,19 @@ func (g *Game) handleUpdateResponse(resp response.Update) {
 	g.Module().Apply(resp.Module)
 }
 
-// handleNewCharResponse handles new characters response from the server.
-func (g *Game) handleNewCharResponse(resp []response.NewChar) {
-	for _, r := range resp {
-		char := g.Module().Chapter().Character(r.ID, r.Serial)
-		if char == nil {
-			log.Printf("Game server: handle new-char response: unable to find character in module: %s %s",
-				r.ID, r.Serial)
+// handleCharacterResponse handles character response from the server.
+func (g *Game) handleCharacterResponse(resp response.Character) {
+	for _, c := range g.Characters() {
+		if c.ID() == resp.ID && c.Serial() == resp.Serial {
+			return
 		}
-		g.AddCharacter(NewCharacter(char, g))
 	}
+	char := g.Module().Chapter().Character(resp.ID, resp.Serial)
+	if char == nil {
+		log.Printf("Game server: handle characher response: unable to find character in module: %s %s",
+			resp.ID, resp.Serial)
+	}
+	g.AddCharacter(NewCharacter(char, g))
 }
 
 // handleTradeResponse handles trade response from the server.

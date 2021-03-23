@@ -87,8 +87,8 @@ func main() {
 func handleResponse(resp response.Response) {
 	if !resp.Logon {
 		handleUpdateResponse(resp.Update)
-		for _, r := range resp.NewChar {
-			handleNewCharResponse(r)
+		for _, r := range resp.Character {
+			handleCharacterResponse(r)
 		}
 	}
 	for _, r := range resp.Error {
@@ -109,10 +109,15 @@ func handleUpdateResponse(resp response.Update) {
 	AI = ai.New(game)
 }
 
-// handleNewCharResponse handlres new character response from the server.
-func handleNewCharResponse(resp response.NewChar) {
+// handleCharacterResponse handles character response from the server.
+func handleCharacterResponse(resp response.Character) {
 	if AI == nil {
 		return
+	}
+	for _, c := range AI.Game().Characters() {
+		if c.ID() == resp.ID && c.Serial() == resp.Serial {
+			return
+		}
 	}
 	for _, c := range AI.Game().Module().Chapter().Characters() {
 		if resp.ID == c.ID() && resp.Serial == c.Serial() {

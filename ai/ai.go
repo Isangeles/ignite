@@ -28,9 +28,9 @@ package ai
 import (
 	"fmt"
 
-	"github.com/isangeles/flame/module/character"
-	"github.com/isangeles/flame/module/effect"
-	"github.com/isangeles/flame/module/skill"
+	"github.com/isangeles/flame/character"
+	"github.com/isangeles/flame/effect"
+	"github.com/isangeles/flame/skill"
 	"github.com/isangeles/flame/rng"
 
 	"github.com/isangeles/ignite/config"
@@ -80,7 +80,7 @@ func (ai *AI) Update(delta int64) {
 		if len(npc.Targets()) < 1 || npc.AttitudeFor(npc.Targets()[0]) != character.Hostile {
 			// Look for hostile target.
 			var tar effect.Target
-			area := ai.Game().Module().Chapter().CharacterArea(npc.Character)
+			area := ai.Game().Chapter().CharacterArea(npc.Character)
 			if area == nil {
 				continue
 			}

@@ -31,7 +31,6 @@ import (
 
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/data/res"
-	"github.com/isangeles/flame/module"
 
 	"github.com/isangeles/fire/request"
 	"github.com/isangeles/fire/response"
@@ -102,9 +101,9 @@ func handleUpdateResponse(resp response.Update) {
 		return
 	}
 	res.Clear()
-	mod := module.New()
+	mod := flame.NewModule()
 	mod.Apply(resp.Module)
-	game := ai.NewGame(flame.NewGame(mod))
+	game := ai.NewGame(mod)
 	game.SetServer(server)
 	AI = ai.New(game)
 }

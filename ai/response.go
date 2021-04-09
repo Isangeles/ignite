@@ -28,7 +28,7 @@ import (
 	"log"
 
 	"github.com/isangeles/flame/data/res"
-	"github.com/isangeles/flame/module/character"
+	"github.com/isangeles/flame/character"
 
 	"github.com/isangeles/fire/request"
 	"github.com/isangeles/fire/response"
@@ -58,7 +58,7 @@ func (g *Game) handleResponse(resp response.Response) {
 // handleUpdateRespone handles update response.
 func (g *Game) handleUpdateResponse(resp response.Update) {
 	res.Clear()
-	g.Module().Apply(resp.Module)
+	g.Apply(resp.Module)
 }
 
 // handleCharacterResponse handles character response from the server.
@@ -68,7 +68,7 @@ func (g *Game) handleCharacterResponse(resp response.Character) {
 			return
 		}
 	}
-	char := g.Module().Chapter().Character(resp.ID, resp.Serial)
+	char := g.Chapter().Character(resp.ID, resp.Serial)
 	if char == nil {
 		log.Printf("Game server: handle characher response: unable to find character in module: %s %s",
 			resp.ID, resp.Serial)
@@ -79,7 +79,7 @@ func (g *Game) handleCharacterResponse(resp response.Character) {
 // handleTradeResponse handles trade response from the server.
 func (g *Game) handleTradeResponse(resp response.Trade) error {
 	// Find seller & buyer.
-	object := g.Module().Object(resp.SellerID, resp.SellerSerial)
+	object := g.Object(resp.SellerID, resp.SellerSerial)
 	if object == nil {
 		return fmt.Errorf("Seller not found: %s %s", resp.SellerID,
 			resp.SellerSerial)
@@ -89,7 +89,7 @@ func (g *Game) handleTradeResponse(resp response.Trade) error {
 		return fmt.Errorf("Seller is not a character: %s %s", resp.SellerID,
 			resp.SellerSerial)
 	}
-	object = g.Module().Object(resp.BuyerID, resp.BuyerSerial)
+	object = g.Object(resp.BuyerID, resp.BuyerSerial)
 	if object == nil {
 		return fmt.Errorf("Buyer not found: %s %s", resp.BuyerID,
 			resp.BuyerSerial)

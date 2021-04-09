@@ -31,15 +31,15 @@ import (
 
 // Struct for game wrapper.
 type Game struct {
-	*flame.Game
+	*flame.Module
 	server      *Server
 	characters  []*Character
 	onLoginFunc func(g *Game)
 }
 
-// NewGame creates new AI game wrapper for specified game.
-func NewGame(game *flame.Game) *Game {
-	g := Game{Game: game}
+// NewGame creates new AI game wrapper for specified module.
+func NewGame(module *flame.Module) *Game {
+	g := Game{Module: module}
 	return &g
 }
 

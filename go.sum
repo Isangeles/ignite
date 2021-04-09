@@ -3,3 +3,5 @@ github.com/isangeles/fire v0.0.0-20210330160153-d63798a7f2a8 h1:5hJS2EsQpNNEMVtx
 github.com/isangeles/fire v0.0.0-20210330160153-d63798a7f2a8/go.mod h1:e9iRBc9Ol/stBy/aJa7ZsbX3fg6Txlk7WYKOw0r2e+M=
 github.com/isangeles/flame v0.0.0-20210330155715-3a82bbee8cae h1:VgS0RU7Rk4AaDXNFz7rADXLzdNAOBsS/HCKC9DJRDX0=
 github.com/isangeles/flame v0.0.0-20210330155715-3a82bbee8cae/go.mod h1:SnqHiRyVIg6hdDObByPdi8C8Fy2TdF5F0bbYQ9/PWLs=
+github.com/isangeles/flame v0.0.0-20210409194627-725c1087950f h1:MreDSNWKQnMYrUkg8Eeb6zvQwBalpLHiwm2VKdIKrd0=
+github.com/isangeles/flame v0.0.0-20210409194627-725c1087950f/go.mod h1:SnqHiRyVIg6hdDObByPdi8C8Fy2TdF5F0bbYQ9/PWLs=

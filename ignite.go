@@ -118,7 +118,7 @@ func handleCharacterResponse(resp response.Character) {
 			return
 		}
 	}
-	for _, c := range AI.Game().Module().Chapter().Characters() {
+	for _, c := range AI.Game().Chapter().Characters() {
 		if resp.ID == c.ID() && resp.Serial == c.Serial() {
 			aiChar := ai.NewCharacter(c, AI.Game())
 			AI.Game().AddCharacter(aiChar)

@@ -4,16 +4,22 @@ Ignite is a [Flame](https://github.com/isangeles/flame) AI client program for th
 The program connects to the game server and controls game NPCs(Non-Player Characters).
 
 Currently in a early development stage.
-## Build & Run
+## Build
 Get sources from git:
 ```
 go get -u github.com/isangeles/ignite
 ```
-Build executable:
+Install executable:
 ```
-go build github.com/isangeles/ignite
+go install github.com/isangeles/ignite@latest
 ```
-Configure host address and port of the game server and user credentials in `.ignite` file(create if it doesn't already exist):
+Or with GOPATH mode simply:
+```
+go install github.com/isangeles/ignite
+```
+After that, Ignite executable will be placed in your GOBIN directory(e.g. ~/go/bin).
+## Run
+Before starting the AI program configure host address and port of the game server and user credentials in `.ignite` file(create if it doesn't already exist):
 ```
 server:[host];[port]
 user:[id];[password]

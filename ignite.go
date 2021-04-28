@@ -66,7 +66,7 @@ func main() {
 		panic(fmt.Errorf("Unable to send login request: %v", err))
 	}
 	update := time.Now()
-	for {
+	for !server.Closed() {
 		// Delta.
 		dtNano := time.Since(update).Nanoseconds()
 		delta := dtNano / int64(time.Millisecond) // delta to milliseconds

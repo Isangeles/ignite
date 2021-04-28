@@ -119,6 +119,14 @@ func (s *Server) handleResponses() {
 		if s.onResponse != nil {
 			go s.onResponse(resp)
 		}
+		if resp.Closed {
+			err := s.Close()
+			if err != nil {
+				log.Printf("Server: unable to close connection: %v",
+					err)
+			}
+			return
+		}
 	}
 	if out.Err() != nil {
 		log.Printf("Server: Unable to read from the server: %v",

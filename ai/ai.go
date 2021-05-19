@@ -44,9 +44,9 @@ type AI struct {
 }
 
 // New creates new AI for specified game.
-func New(g *Game) *AI {
+func New(game *Game) *AI {
 	ai := new(AI)
-	ai.game = g
+	ai.game = game
 	return ai
 }
 
@@ -99,11 +99,7 @@ func (ai *AI) Update(delta int64) {
 			npc.SetTarget(tar)
 		}
 		if npc.Fighting() {
-			skill := ai.combatSkill(npc, npc.Targets()[0])
-			if skill == nil {
-				continue
-			}
-			npc.Use(skill)
+			ai.fight(npc)
 		}
 		break
 	}
@@ -145,6 +141,20 @@ func (ai *AI) saySomething(npc *Character) {
 	}
 	textID := fmt.Sprintf("random_chat_%s", npc.Race().ID())
 	npc.AddChatMessage(textID)
+}
+
+// fight selects proper combat skill and uses it on the current target of specified NPC.
+func (ai *AI) fight(npc *Character) {
+	tar := npc.Targets()[0]
+	skill := ai.combatSkill(npc, npc.Targets()[0])
+	if skill == nil {
+		return
+	}
+	if !npc.meetTargetRangeReqs(skill.UseAction().Requirements()...) {
+		npc.SetDestPoint(tar.Position())
+		return
+	}
+	npc.Use(skill)
 }
 
 // combatSkill selects NPC skill to use in combat or nil if specified

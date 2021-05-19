@@ -29,6 +29,7 @@ import (
 	"github.com/isangeles/flame/character"
 	"github.com/isangeles/flame/effect"
 	"github.com/isangeles/flame/objects"
+	"github.com/isangeles/flame/req"
 	"github.com/isangeles/flame/serial"
 	"github.com/isangeles/flame/useaction"
 
@@ -125,4 +126,18 @@ func (c *Character) Use(ob useaction.Usable) {
 		log.Printf("Character: %s %s: unable to send use request: %v",
 			c.ID(), c.Serial(), err)
 	}
+}
+
+// meetTargetRangeReqs check if all target range requirements are meet.
+// Returns true, if none of specified requirements is a target range
+// requirement.
+func (c *Character) meetTargetRangeReqs(reqs ...req.Requirement) bool {
+	for _, r := range reqs {
+		if r, ok := r.(*req.TargetRange); ok {
+			if !c.MeetReq(r) {
+				return false
+			}
+		}
+	}
+	return true
 }

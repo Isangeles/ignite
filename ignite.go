@@ -101,8 +101,7 @@ func handleUpdateResponse(resp response.Update) {
 		return
 	}
 	res.Clear()
-	mod := flame.NewModule()
-	mod.Apply(resp.Module)
+	mod := flame.NewModule(resp.Module)
 	game := ai.NewGame(mod)
 	game.SetServer(server)
 	AI = ai.New(game)

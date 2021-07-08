@@ -26,13 +26,16 @@ package ai
 import (
 	"fmt"
 	"log"
+	"sync"
 
-	"github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/character"
+	"github.com/isangeles/flame/data/res"
 
 	"github.com/isangeles/fire/request"
 	"github.com/isangeles/fire/response"
 )
+
+var addCharMutex sync.Mutex
 
 // handleResponse handles specified response from Fire server.
 func (g *Game) handleResponse(resp response.Response) {
@@ -63,6 +66,8 @@ func (g *Game) handleUpdateResponse(resp response.Update) {
 
 // handleCharacterResponse handles character response from the server.
 func (g *Game) handleCharacterResponse(resp response.Character) {
+	addCharMutex.Lock()
+	defer addCharMutex.Unlock()
 	for _, c := range g.Characters() {
 		if c.ID() == resp.ID && c.Serial() == resp.Serial {
 			return

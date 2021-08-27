@@ -35,7 +35,7 @@ import (
 	"github.com/isangeles/fire/response"
 )
 
-var addCharMutex sync.Mutex
+var handleCharRespMutex sync.Mutex
 
 // handleResponse handles specified response from Fire server.
 func (g *Game) handleResponse(resp response.Response) {
@@ -43,9 +43,7 @@ func (g *Game) handleResponse(resp response.Response) {
 		g.onLoginFunc(g)
 	}
 	g.handleUpdateResponse(resp.Update)
-	for _, r := range resp.Character {
-		g.handleCharacterResponse(r)
-	}
+	g.handleCharacterResponse(resp.Character)
 	for _, r := range resp.Trade {
 		err := g.handleTradeResponse(r)
 		if err != nil {
@@ -65,20 +63,31 @@ func (g *Game) handleUpdateResponse(resp response.Update) {
 }
 
 // handleCharacterResponse handles character response from the server.
-func (g *Game) handleCharacterResponse(resp response.Character) {
-	addCharMutex.Lock()
-	defer addCharMutex.Unlock()
-	for _, c := range g.Characters() {
-		if c.ID() == resp.ID && c.Serial() == resp.Serial {
-			return
+func (g *Game) handleCharacterResponse(resp []response.Character) {
+	handleCharRespMutex.Lock()
+	defer handleCharRespMutex.Unlock()
+	// Add new characters.
+	for _, charResp := range resp {
+		if g.characters[charResp.ID+charResp.Serial] != nil {
+			break
 		}
+		char := g.Chapter().Character(charResp.ID, charResp.Serial)
+		if char == nil {
+			log.Printf("Game server: handle character response: unable to find character in module: %s %s",
+				charResp.ID, charResp.Serial)
+		}
+		g.AddCharacter(NewCharacter(char, g))
 	}
-	char := g.Chapter().Character(resp.ID, resp.Serial)
-	if char == nil {
-		log.Printf("Game server: handle characher response: unable to find character in module: %s %s",
-			resp.ID, resp.Serial)
+	// Remove not controlled characters.
+outer:
+	for _, char := range g.Characters() {
+		for _, charResp := range resp {
+			if charResp.ID == char.ID() && charResp.Serial == char.Serial() {
+				continue outer
+			}
+		}
+		g.RemoveCharacter(char)
 	}
-	g.AddCharacter(NewCharacter(char, g))
 }
 
 // handleTradeResponse handles trade response from the server.

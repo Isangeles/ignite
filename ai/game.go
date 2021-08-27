@@ -33,24 +33,35 @@ import (
 type Game struct {
 	*flame.Module
 	server      *Server
-	characters  []*Character
+	characters  map[string]*Character
 	onLoginFunc func(g *Game)
 }
 
 // NewGame creates new AI game wrapper for specified module.
 func NewGame(module *flame.Module) *Game {
-	g := Game{Module: module}
+	g := Game{
+		Module:     module,
+		characters: make(map[string]*Character),
+	}
 	return &g
 }
 
-// AddCharacter adds character to the game.
+// AddCharacter adds character to control by the game AI.
 func (g *Game) AddCharacter(c *Character) {
-	g.characters = append(g.characters, c)
+	g.characters[c.ID()+c.Serial()] = c
+}
+
+// RemoveCharacter removes character from game AI control.
+func (g *Game) RemoveCharacter(c *Character) {
+	delete(g.characters, c.ID()+c.Serial())
 }
 
 // Character returns game characters.
-func (g *Game) Characters() []*Character {
-	return g.characters
+func (g *Game) Characters() (chars []*Character) {
+	for _, char := range g.characters {
+		chars = append(chars, char)
+	}
+	return chars
 }
 
 // SetServer sets remote game server.

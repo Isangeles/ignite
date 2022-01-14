@@ -3,6 +3,6 @@ module github.com/isangeles/ignite
 go 1.16
 
 require (
-	github.com/isangeles/fire v0.0.0-20220108131254-bf3186f30e07
-	github.com/isangeles/flame v0.0.0-20220106162411-d5c5d3f9ae99
+	github.com/isangeles/fire v0.0.0-20220114173613-3b07decfb972
+	github.com/isangeles/flame v0.0.0-20220112165140-ac021ce9a650
 )

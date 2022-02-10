@@ -1,7 +1,7 @@
 /*
  * response.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2022 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,6 +75,7 @@ func (g *Game) handleCharacterResponse(resp []response.Character) {
 		if char == nil {
 			log.Printf("Game server: handle character response: unable to find character in module: %s %s",
 				charResp.ID, charResp.Serial)
+			continue
 		}
 		g.AddCharacter(NewCharacter(char, g))
 	}

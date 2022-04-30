@@ -2,6 +2,7 @@ MAJOR:
 * AI: selecting skills proper to the situation
 MINOR:
 * package with API usage examples
+* AI: random chat is currently displaying always first line for race ID, it should be random
 DONE:
 * AI: random move
 * AI: random chat

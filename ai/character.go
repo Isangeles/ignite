@@ -1,7 +1,7 @@
 /*
  * character.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2022 Dariusz Sikora <dev@isangeles.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,12 +132,14 @@ func (c *Character) Use(ob useaction.Usable) {
 // Returns true, if none of specified requirements is a target range
 // requirement.
 func (c *Character) meetTargetRangeReqs(reqs ...req.Requirement) bool {
+	tarRangeReqs := make([]req.Requirement, 0)
 	for _, r := range reqs {
 		if r, ok := r.(*req.TargetRange); ok {
-			if !c.MeetReq(r) {
-				return false
-			}
+			tarRangeReqs = append(tarRangeReqs, r)
 		}
+	}
+	if !c.MeetReqs(tarRangeReqs...) {
+		return false
 	}
 	return true
 }

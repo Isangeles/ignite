@@ -68,8 +68,7 @@ func main() {
 	update := time.Now()
 	for !server.Closed() {
 		// Delta.
-		dtNano := time.Since(update).Nanoseconds()
-		delta := dtNano / int64(time.Millisecond) // delta to milliseconds
+		delta := time.Since(update).Milliseconds()
 		// Update.
 		if AI == nil {
 			continue

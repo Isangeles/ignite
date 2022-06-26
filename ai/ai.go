@@ -1,7 +1,7 @@
 /*
  * ai.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,9 @@ import (
 
 	"github.com/isangeles/flame/character"
 	"github.com/isangeles/flame/effect"
-	"github.com/isangeles/flame/skill"
+	"github.com/isangeles/flame/req"
 	"github.com/isangeles/flame/rng"
+	"github.com/isangeles/flame/skill"
 
 	"github.com/isangeles/ignite/config"
 )
@@ -151,7 +152,8 @@ func (ai *AI) fight(npc *Character) {
 		return
 	}
 	if !npc.meetTargetRangeReqs(skill.UseAction().Requirements()...) {
-		npc.SetDestPoint(tar.Position())
+		destPosX, destPosY := tar.Position()
+		npc.MoveCloseTo(destPosX, destPosY, minRange(skill))
 		return
 	}
 	npc.Use(skill)
@@ -164,4 +166,14 @@ func (ai *AI) combatSkill(npc *Character, tar effect.Target) *skill.Skill {
 		return nil
 	}
 	return npc.Skills()[0]
+}
+
+// minRange returns minimal required range for specified skill.
+func minRange(skill *skill.Skill) float64 {
+	for _, r := range skill.UseAction().Requirements() {
+		if r, ok := r.(*req.TargetRange); ok {
+			return r.MinRange()
+		}
+	}
+	return 0
 }

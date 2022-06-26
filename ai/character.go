@@ -1,7 +1,7 @@
 /*
  * character.go
  *
- * Copyright 2021-2022 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,6 +126,23 @@ func (c *Character) Use(ob useaction.Usable) {
 		log.Printf("Character: %s %s: unable to send use request: %v",
 			c.ID(), c.Serial(), err)
 	}
+}
+
+// MoveCloseTo moves character to the position at minimal range
+// to the specified position.
+func (c *Character) MoveCloseTo(x, y, minRange float64) {
+	charX, charY := c.Position()
+	switch {
+	case x > charX:
+		x -= minRange
+	case x < charX:
+		x += minRange
+	case y > charY:
+		y -= minRange
+	case y < charY:
+		y += minRange
+	}
+	c.SetDestPoint(x, y)
 }
 
 // meetTargetRangeReqs check if all target range requirements are meet.

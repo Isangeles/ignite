@@ -5,19 +5,10 @@ The program connects to the game server and controls game NPCs(Non-Player Charac
 
 Currently in a early development stage.
 ## Build
-Get sources from git:
+Get sources from git and run:
 ```
-go get -u github.com/isangeles/ignite
+go build
 ```
-Install executable:
-```
-go install github.com/isangeles/ignite@latest
-```
-Or with GOPATH mode simply:
-```
-go install github.com/isangeles/ignite
-```
-After that, Ignite executable will be placed in your GOBIN directory(e.g. ~/go/bin).
 ## Run
 Before starting the AI program configure host address and port of the game server and user credentials in `.ignite` file(create if it doesn't already exist):
 ```
@@ -67,9 +58,9 @@ If you looking for things to do, then check the TODO file or contact maintainer(
 When you find something to do, create a new branch for your feature.
 After you finish, open a pull request to merge your changes with master branch.
 ## Contact
-* Isangeles <<dev@isangeles.pl>>
+* Isangeles <<ds@isangeles.dev>>
 ## License
-Copyright 2021-2022 Dariusz Sikora <<dev@isangeles.pl>>
+Copyright 2021-2022 Dariusz Sikora <<ds@isangeles.dev>>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

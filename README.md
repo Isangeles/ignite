@@ -53,7 +53,7 @@ man doc/config
 ## Contributing
 You are welcome to contribute to project development.
 
-If you looking for things to do, then check the TODO file or contact maintainer(dev@isangeles.pl).
+If you looking for things to do, then check the TODO file or contact maintainer(ds@isangeles.dev).
 
 When you find something to do, create a new branch for your feature.
 After you finish, open a pull request to merge your changes with master branch.

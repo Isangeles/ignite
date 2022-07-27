@@ -147,8 +147,11 @@ func (ai *AI) saySomething(npc *Character) {
 
 // fight selects proper combat skill and uses it on the current target of specified NPC.
 func (ai *AI) fight(npc *Character) {
+	if npc.Cooldown() > 0 || npc.Casted() != nil {
+		return
+	}
 	tar := npc.Targets()[0]
-	skill := ai.combatSkill(npc, npc.Targets()[0])
+	skill := combatSkill(npc, npc.Targets()[0])
 	if skill == nil {
 		return
 	}
@@ -161,12 +164,14 @@ func (ai *AI) fight(npc *Character) {
 }
 
 // combatSkill selects NPC skill to use in combat or nil if specified
-// NPC has no skills to use.
-func (ai *AI) combatSkill(npc *Character, tar effect.Target) *skill.Skill {
-	if len(npc.Skills()) < 1 {
-		return nil
+// NPC has no suitable skills to use in combat.
+func combatSkill(npc *Character, tar effect.Target) *skill.Skill {
+	for _, s := range npc.Skills() {
+		if s.UseAction() != nil && s.UseAction().Cooldown() <= 0 {
+			return s
+		}
 	}
-	return npc.Skills()[0]
+	return nil
 }
 
 // minRange returns minimal required range for specified skill.

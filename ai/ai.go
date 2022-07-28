@@ -147,9 +147,6 @@ func (ai *AI) saySomething(npc *Character) {
 
 // fight selects proper combat skill and uses it on the current target of specified NPC.
 func (ai *AI) fight(npc *Character) {
-	if npc.Cooldown() > 0 || npc.Casted() != nil {
-		return
-	}
 	tar := npc.Targets()[0]
 	skill := combatSkill(npc, npc.Targets()[0])
 	if skill == nil {
@@ -158,6 +155,9 @@ func (ai *AI) fight(npc *Character) {
 	if !npc.meetTargetRangeReqs(skill.UseAction().Requirements()...) {
 		destPosX, destPosY := tar.Position()
 		npc.MoveCloseTo(destPosX, destPosY, minRange(skill))
+		return
+	}
+	if npc.Cooldown() > 0 || npc.Casted() != nil {
 		return
 	}
 	npc.Use(skill)

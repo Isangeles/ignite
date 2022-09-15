@@ -81,7 +81,7 @@ func (ai *AI) Update(delta int64) {
 		if len(npc.Targets()) < 1 || npc.AttitudeFor(npc.Targets()[0]) != character.Hostile {
 			// Look for hostile target.
 			var tar effect.Target
-			area := ai.Game().Chapter().CharacterArea(npc.Character)
+			area := ai.Game().Chapter().ObjectArea(npc)
 			if area == nil {
 				continue
 			}

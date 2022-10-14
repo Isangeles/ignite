@@ -69,7 +69,7 @@ func (c *Character) SetDestPoint(x, y float64) {
 
 // AddChatMessage adds new message to character chat log.
 func (c *Character) AddChatMessage(message string) {
-	c.ChatLog().Add(objects.Message{Text: message})
+	c.ChatLog().Add(objects.NewMessage(message, false))
 	if c.game.Server() == nil {
 		return
 	}

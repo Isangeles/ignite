@@ -145,6 +145,12 @@ func (c *Character) MoveCloseTo(x, y, minRange float64) {
 	c.SetDestPoint(x, y)
 }
 
+// hasHostileTarget checks if character first target is
+// hostile.
+func (c* Character) hasHostileTarget() bool {
+	return len(c.Targets()) > 0 && c.AttitudeFor(c.Targets()[0]) == character.Hostile
+}
+
 // meetTargetRangeReqs check if all target range requirements are meet.
 // Returns true, if none of specified requirements is a target range
 // requirement.

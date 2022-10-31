@@ -4,7 +4,6 @@ MAJOR:
 MINOR:
 * package with API usage examples
 * AI: random chat is currently displaying always first line for race ID, it should be random
-* AI: NPC should return on default position after combat
 DONE:
 * AI: random move
 * AI: random chat

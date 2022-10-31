@@ -1,4 +1,4 @@
-github.com/isangeles/fire v0.0.0-20221013170000-7a5dca0fda8c h1:wGYN/KFhYTF5aazQ6wR8eowsNWhIGiMv81H4PYPcm9I=
-github.com/isangeles/fire v0.0.0-20221013170000-7a5dca0fda8c/go.mod h1:ddIgxZ1fvLzeSpV+VYWQDqifgF2fH+KYv32nP/oeunI=
-github.com/isangeles/flame v0.0.0-20221011162038-399adf7749db h1:hmjBzgikKnZjEiY0VKh7R8lM9GkAPYTzCkPPKbX6GRQ=
-github.com/isangeles/flame v0.0.0-20221011162038-399adf7749db/go.mod h1:SnqHiRyVIg6hdDObByPdi8C8Fy2TdF5F0bbYQ9/PWLs=
+github.com/isangeles/fire v0.0.0-20221028193002-45858240db4b h1:eKEn9Di1Wfr3kCiW5JhRH1d4acE+85gYnApsRpvCws8=
+github.com/isangeles/fire v0.0.0-20221028193002-45858240db4b/go.mod h1:ddIgxZ1fvLzeSpV+VYWQDqifgF2fH+KYv32nP/oeunI=
+github.com/isangeles/flame v0.0.0-20221029195026-f696e6b7f534 h1:jq7LV469FXcXi98bNk0quh1KhoMHFtP8/RWIERKgJaY=
+github.com/isangeles/flame v0.0.0-20221029195026-f696e6b7f534/go.mod h1:SnqHiRyVIg6hdDObByPdi8C8Fy2TdF5F0bbYQ9/PWLs=

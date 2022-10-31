@@ -30,6 +30,7 @@ import (
 
 	"github.com/isangeles/flame/character"
 	"github.com/isangeles/flame/effect"
+	"github.com/isangeles/flame/objects"
 	"github.com/isangeles/flame/req"
 	"github.com/isangeles/flame/rng"
 	"github.com/isangeles/flame/skill"
@@ -78,7 +79,7 @@ func (ai *AI) Update(delta int64) {
 			ai.saySomething(npc)
 		}
 		// Combat.
-		if len(npc.Targets()) < 1 || npc.AttitudeFor(npc.Targets()[0]) != character.Hostile {
+		if !npc.hasHostileTarget() {
 			// Look for hostile target.
 			var tar effect.Target
 			area := ai.Game().Chapter().ObjectArea(npc)
@@ -99,6 +100,9 @@ func (ai *AI) Update(delta int64) {
 				continue
 			}
 			npc.SetTarget(tar)
+		}
+		if npc.hasHostileTarget() && !targetLive(npc.Targets()[0]) {
+			npc.SetTarget(nil)
 		}
 		if npc.Fighting() {
 			ai.fight(npc)
@@ -182,4 +186,14 @@ func minRange(skill *skill.Skill) float64 {
 		}
 	}
 	return 0
+}
+
+// targetLive checks if specified target is a live.
+// Returns false if target is not an killable target.
+func targetLive(tar effect.Target) bool {
+	killable, ok := tar.(objects.Killable)
+	if !ok {
+		return false
+	}
+	return killable.Live()
 }

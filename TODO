@@ -1,6 +1,8 @@
 MAJOR:
 * AI: selecting skills proper to the situation
 * AI: update each NPC asynchronously
+* Tests for AI behavior
+* Tests for game character struct
 MINOR:
 * package with API usage examples
 * AI: random chat is currently displaying always first line for race ID, it should be random

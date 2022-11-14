@@ -27,19 +27,22 @@ import (
 	"testing"
 
 	"github.com/isangeles/flame"
-	"github.com/isangeles/flame/data/res"
 	"github.com/isangeles/flame/character"
+	"github.com/isangeles/flame/data/res"
+
+	"github.com/isangeles/ignite/config"
 )
 
 var charData = res.CharacterData{ID: "char", Level: 1, Attributes: res.AttributesData{5, 5, 5, 5, 5}}
 
-// TestMoveAround test moving around by AI.
-func TestMoveAronud(t *testing.T) {
+// TestUpdateMoveAround test moving around by AI.
+func TestUpdateMoveAronud(t *testing.T) {
 	mod := flame.NewModule(res.ModuleData{})
 	game := NewGame(mod)
-	ai := New(game)
 	char := NewCharacter(character.New(charData), game)
-	ai.moveAround(char)
+	game.AddCharacter(char)
+	ai := New(game)
+	ai.Update(config.MoveFreq)
 	posX, posY := char.Position()
 	destX, destY := char.DestPoint()
 	if posX == destX && posY == destY {

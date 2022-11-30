@@ -1,7 +1,7 @@
 /*
  * server.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2022 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,6 +90,8 @@ func (s *Server) Update() error {
 }
 
 // Send sends specified request to the server.
+// If error will occure while writing data using server connection
+// then the server connection will be closed and error returned.
 func (s *Server) Send(req request.Request) error {
 	text, err := request.Marshal(&req)
 	if err != nil {
@@ -98,6 +100,7 @@ func (s *Server) Send(req request.Request) error {
 	text = fmt.Sprintf("%s\r\n", text)
 	_, err = s.conn.Write([]byte(text))
 	if err != nil {
+		s.Close()
 		return fmt.Errorf("Unable to write request: %v", err)
 	}
 	return nil

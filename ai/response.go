@@ -1,7 +1,7 @@
 /*
  * response.go
  *
- * Copyright 2021-2022 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ func (g *Game) handleCharacterResponse(resp []response.Character) {
 	defer handleCharRespMutex.Unlock()
 	// Add new characters.
 	for _, charResp := range resp {
-		if g.characters[charResp.ID+charResp.Serial] != nil {
+		if v, ok := g.characters.Load(charResp.ID + charResp.Serial); ok && v != nil {
 			break
 		}
 		char := g.Chapter().Character(charResp.ID, charResp.Serial)

@@ -1,7 +1,7 @@
 /*
  * game.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ package ai
 
 import (
 	"log"
+	"sync"
 
 	"github.com/isangeles/flame"
 )
@@ -33,7 +34,7 @@ import (
 type Game struct {
 	*flame.Module
 	server      *Server
-	characters  map[string]*Character
+	characters  *sync.Map
 	onLoginFunc func(g *Game)
 }
 
@@ -41,27 +42,32 @@ type Game struct {
 func NewGame(module *flame.Module) *Game {
 	g := Game{
 		Module:     module,
-		characters: make(map[string]*Character),
+		characters: new(sync.Map),
 	}
 	return &g
 }
 
 // AddCharacter adds character to control by the game AI.
 func (g *Game) AddCharacter(c *Character) {
-	g.characters[c.ID()+c.Serial()] = c
+	g.characters.Store(c.ID()+c.Serial(), c)
 }
 
 // RemoveCharacter removes character from game AI control.
 func (g *Game) RemoveCharacter(c *Character) {
-	delete(g.characters, c.ID()+c.Serial())
+	g.characters.Delete(c.ID() + c.Serial())
 }
 
 // Character returns game characters.
 func (g *Game) Characters() (chars []*Character) {
-	for _, char := range g.characters {
-		chars = append(chars, char)
+	addChar := func(k, v interface{}) bool {
+		char, ok := v.(*Character)
+		if ok {
+			chars = append(chars, char)
+		}
+		return true
 	}
-	return chars
+	g.characters.Range(addChar)
+	return
 }
 
 // SetServer sets remote game server.

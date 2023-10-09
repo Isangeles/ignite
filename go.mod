@@ -1,8 +1,10 @@
 module github.com/isangeles/ignite
 
-go 1.19
+go 1.20
 
 require (
-	github.com/isangeles/fire v0.0.0-20230416094323-8120f8d08bce
-	github.com/isangeles/flame v0.0.0-20230417203336-d6701e20efe5
+	github.com/isangeles/fire v0.0.0-20231003141948-a1f90f824270
+	github.com/isangeles/flame v0.0.0-20230927160351-b88c2c79d53a
 )
+
+require github.com/isangeles/tmx v0.0.0-20230925150339-5410bc1b891b // indirect

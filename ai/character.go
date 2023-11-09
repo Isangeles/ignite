@@ -1,7 +1,7 @@
 /*
  * character.go
  *
- * Copyright 2021-2022 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,8 @@ import (
 // Wrapper struct for AI character.
 type Character struct {
 	*character.Character
-	game *Game
+	game        *Game
+	onUseEvents []func(o useaction.Usable)
 }
 
 // NewCharacter creates new game character.
@@ -49,6 +50,11 @@ func NewCharacter(char *character.Character, game *Game) *Character {
 		game:      game,
 	}
 	return &c
+}
+
+// AddOnUseEvent adds function to trigger after using an usable object.
+func (c *Character) AddOnUseEvent(event func(o useaction.Usable)) {
+	c.onUseEvents = append(c.onUseEvents, event)
 }
 
 // SetDestPoint sets a specified XY position as current
@@ -110,6 +116,12 @@ func (c *Character) Use(ob useaction.Usable) {
 		return
 	}
 	if c.game.Server() == nil {
+		// If no server then trigger onUse event and return.
+		// With server this event should be triggered after
+		// use response from the server.
+		for _, event := range c.onUseEvents {
+			event(ob)
+		}
 		return
 	}
 	useReq := request.Use{
@@ -147,7 +159,7 @@ func (c *Character) MoveCloseTo(x, y, minRange float64) {
 
 // hasHostileTarget checks if character first target is
 // hostile.
-func (c* Character) hasHostileTarget() bool {
+func (c *Character) hasHostileTarget() bool {
 	return len(c.Targets()) > 0 && c.AttitudeFor(c.Targets()[0]) == character.Hostile
 }
 

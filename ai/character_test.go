@@ -1,7 +1,7 @@
 /*
- * ai_test.go
+ * character_test.go
  *
- * Copyright 2022-2023 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2023 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,21 +29,39 @@ import (
 	"github.com/isangeles/flame"
 	"github.com/isangeles/flame/character"
 	"github.com/isangeles/flame/data/res"
-
-	"github.com/isangeles/ignite/config"
+	"github.com/isangeles/flame/skill"
+	"github.com/isangeles/flame/useaction"
 )
 
-// TestUpdateMoveAround test moving around by AI.
-func TestUpdateMoveAronud(t *testing.T) {
+var (
+	healthModData = res.HealthModData{1, 10}
+	useActionData = res.UseActionData{TargetMods: res.ModifiersData{
+		HealthMods: []res.HealthModData{healthModData},
+	}}
+	skillData = res.SkillData{ID: "skill", UseAction: useActionData}
+	charData = res.CharacterData{
+		ID: "char",
+		Level: 1,
+		Attributes: res.AttributesData{5, 5, 5, 5, 5},
+	}
+)
+
+// TestCharAddOnUseEvent tests adding on use callback
+// function for the game character.
+func TestCharAddOnUseEvent(t *testing.T) {
 	mod := flame.NewModule(res.ModuleData{})
 	game := NewGame(mod)
 	char := NewCharacter(character.New(charData), game)
-	game.AddCharacter(char)
-	ai := New(game)
-	ai.Update(config.MoveFreq)
-	posX, posY := char.Position()
-	destX, destY := char.DestPoint()
-	if posX == destX && posY == destY {
-		t.Fatalf("Character was not moved")
+	usable := skill.New(skillData)
+	char.AddSkill(usable)
+	funcTriggered := false
+	function := func(ob useaction.Usable) {
+		funcTriggered = true
+	}
+	char.AddOnUseEvent(function)
+	char.Use(usable)
+	char.Update(1)
+	if !funcTriggered {
+		t.Errorf("Callback function not tirggered")
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * ignite.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2024 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,7 +74,6 @@ func main() {
 			continue
 		}
 		AI.Update(delta)
-		AI.Game().Update(delta)
 		update = time.Now()
 		// Update break.
 		time.Sleep(time.Duration(16) * time.Millisecond)

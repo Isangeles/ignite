@@ -1,7 +1,7 @@
 /*
  * game.go
  *
- * Copyright 2021-2023 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2024 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ import (
 // Struct for game wrapper.
 type Game struct {
 	*flame.Module
+	paused      bool
 	server      *Server
 	characters  *sync.Map
 	onLoginFunc func(g *Game)

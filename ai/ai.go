@@ -1,7 +1,7 @@
 /*
  * ai.go
  *
- * Copyright 2021-2022 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2024 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,6 +54,9 @@ func New(game *Game) *AI {
 
 // Update updates AI.
 func (ai *AI) Update(delta int64) {
+	if ai.game.paused {
+		return
+	}
 	ai.moveTimer += delta
 	ai.chatTimer += delta
 	// NPCs.

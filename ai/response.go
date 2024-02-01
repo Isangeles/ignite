@@ -1,7 +1,7 @@
 /*
  * response.go
  *
- * Copyright 2021-2023 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2024 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ func (g *Game) handleResponse(resp response.Response) {
 	}
 	g.handleUpdateResponse(resp.Update)
 	g.handleCharacterResponse(resp.Character)
+	g.paused = resp.Paused
 	for _, r := range resp.Trade {
 		err := g.handleTradeResponse(r)
 		if err != nil {

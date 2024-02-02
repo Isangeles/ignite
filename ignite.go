@@ -1,7 +1,7 @@
 /*
  * ignite.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2024 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,9 +67,8 @@ func main() {
 	}
 	update := time.Now()
 	for !server.Closed() {
-		// Delta.
-		delta := time.Since(update).Milliseconds()
 		// Update.
+		delta := time.Since(update).Milliseconds()
 		if AI == nil {
 			continue
 		}

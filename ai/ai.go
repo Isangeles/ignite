@@ -145,9 +145,6 @@ func (ai *AI) moveAround(npc *Character) {
 
 // saySomething sends random text on NPC chat channel.
 func (ai *AI) saySomething(npc *Character) {
-	if npc.Race() == nil {
-		return
-	}
 	textID := fmt.Sprintf("random_chat_%s", npc.Race().ID())
 	npc.AddChatMessage(textID)
 }

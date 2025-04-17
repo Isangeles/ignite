@@ -24,9 +24,14 @@ Value for AI random move frequency in milliseconds, 3000 by default.
 * chat-freq
 .br
 Value for AI random chat frequency in milliseconds, 5000 by default.
+.P
+* deaggro-dis
+.br
+Maximum distance from the NPC's default position during combat, if exceeded the NPC will disengage from the combat and return on it's default position
 .SH EXAMPLE
 .nf
 server:localhost;8000
 user:u1;asd!
 move-freq:3000
 chat-freq:5000
+deaggro-dis:500

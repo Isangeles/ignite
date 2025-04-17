@@ -6,11 +6,11 @@ MINOR:
 * package with API usage examples
 * AI: random chat is currently displaying always first line for race ID, it should be random
 * AI: running away on low health(configurable)
-* AI: losing aggro on specific distance away from def pos(configurable)
 DONE:
 * AI: random move
 * AI: random chat
 * AI: attacking chars with aggressive attitude
+* AI: losing aggro on specific distance away from def pos(configurable)
 * Connecting to the server and updating AI game
 * Configuration package
 * Communication with the game server

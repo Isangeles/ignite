@@ -1,7 +1,7 @@
 /*
  * config.go
  *
- * Copyright 2021 Dariusz Sikora <dev@isangeles.pl>
+ * Copyright 2021-2025 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ var (
 	// Random actions frequences(in millis).
 	MoveFreq int64 = 3000
 	ChatFreq int64 = 5000
+	DeaggroDis = 500.0
 )
 
 // Load load server configuration file.
@@ -79,6 +80,12 @@ func Load() error {
 		chatFreq, err := strconv.ParseInt(conf["chat-freq"][0], 0, 64)
 		if err == nil {
 			ChatFreq = chatFreq
+		}
+	}
+	if len(conf["deaggro-dis"]) > 0 {
+		deaggroDis, err := strconv.ParseFloat(conf["deaggro-dis"][0], 64)
+		if err == nil {
+			DeaggroDis = deaggroDis
 		}
 	}
 	return nil

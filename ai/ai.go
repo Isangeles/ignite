@@ -1,7 +1,7 @@
 /*
  * ai.go
  *
- * Copyright 2021-2024 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2025 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ func (ai *AI) Update(delta int64) {
 			}
 			npc.SetTarget(tar)
 		}
-		if npc.hasHostileTarget() && !targetLive(npc.Targets()[0]) {
+		if npc.hasHostileTarget() && (!targetLive(npc.Targets()[0]) || npc.DefPosDistance() > config.DeaggroDis) {
 			npc.SetTarget(nil)
 		}
 		if npc.Fighting() {

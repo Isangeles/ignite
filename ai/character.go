@@ -1,7 +1,7 @@
 /*
  * character.go
  *
- * Copyright 2021-2023 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2025 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ package ai
 
 import (
 	"log"
+	"math"
 
 	"github.com/isangeles/flame/character"
 	"github.com/isangeles/flame/effect"
@@ -155,6 +156,13 @@ func (c *Character) MoveCloseTo(x, y, minRange float64) {
 		y += minRange
 	}
 	c.SetDestPoint(x, y)
+}
+
+// Retruns distance from the character default position.
+func (c *Character) DefPosDistance() float64 {
+	posX, posY := c.Position()
+	defX, defY := c.DefaultPosition()
+	return math.Hypot(posX-defX, posY-defY)
 }
 
 // hasHostileTarget checks if character first target is

@@ -39,6 +39,10 @@ Value for AI random move frequency in milliseconds, 3000 by default.
 chat-freq:[milliseconds]
 ```
 Value for AI random chat frequency in milliseconds, 5000 by default.
+```
+deaggro-dis:[XY distance]
+```
+Value for NPC disengagement distance, 500 by default.
 ## Documentation
 Source code documentation could be easily browsed with the `go doc` command.
 
@@ -60,7 +64,7 @@ After you finish, open a pull request to merge your changes with master branch.
 ## Contact
 * Isangeles <<ds@isangeles.dev>>
 ## License
-Copyright 2021-2025 Dariusz Sikora <<ds@isangeles.dev>>
+Copyright 2021-2026 Dariusz Sikora <<ds@isangeles.dev>>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

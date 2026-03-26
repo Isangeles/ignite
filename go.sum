@@ -1,3 +1,5 @@
+github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
+github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/isangeles/fire v0.0.0-20250807192816-3a794d9db593 h1:CxVfhIC2BHZ6HrufquwgR7uCBv3htHv5XkpO8PG0yc0=
 github.com/isangeles/fire v0.0.0-20250807192816-3a794d9db593/go.mod h1:Vq76eqtdPXmRC7p8Nt6QYeWdfVXOflpadJwqekbBVI8=
 github.com/isangeles/flame v0.0.0-20250805210132-e8a543f518cb h1:D0nxRtA2FudkWSzquXBhqtjFVI8VvM693nX5D9lf/5g=

@@ -1,7 +1,7 @@
 /*
  * server.go
  *
- * Copyright 2022 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2022-2026 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,23 +24,19 @@
 package ai
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"net"
+
+	"github.com/gorilla/websocket"
 
 	"github.com/isangeles/fire/request"
 	"github.com/isangeles/fire/response"
 )
 
-const (
-	responseBufferSize = 99999999
-)
-
 // Struct for server connection.
 type Server struct {
 	closed     bool
-	conn       net.Conn
+	conn       *websocket.Conn
 	onResponse func(r response.Response)
 }
 
@@ -48,8 +44,8 @@ type Server struct {
 // to the server with specified host and port number.
 func NewServer(host, port string) (*Server, error) {
 	s := new(Server)
-	address := fmt.Sprintf("%s:%s", host, port)
-	conn, err := net.Dial("tcp", address)
+	url := fmt.Sprintf("ws://%s:%s/", host, port)
+	conn, _, err := websocket.DefaultDialer.Dial(url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to dial server: %v", err)
 	}
@@ -97,8 +93,7 @@ func (s *Server) Send(req request.Request) error {
 	if err != nil {
 		return fmt.Errorf("Unable to marshal request: %v", err)
 	}
-	text = fmt.Sprintf("%s\r\n", text)
-	_, err = s.conn.Write([]byte(text))
+	err = s.conn.WriteMessage(websocket.TextMessage, []byte(text))
 	if err != nil {
 		s.Close()
 		return fmt.Errorf("Unable to write request: %v", err)
@@ -109,13 +104,15 @@ func (s *Server) Send(req request.Request) error {
 // handleResponses handles responses from the server and
 // triggers onServerResponse for each response.
 func (s *Server) handleResponses() {
-	out := bufio.NewScanner(s.conn)
-	outBuff := make([]byte, responseBufferSize)
-	out.Buffer(outBuff, len(outBuff))
-	for out.Scan() && !s.Closed() {
-		resp, err := response.Unmarshal(out.Text())
+	for !s.Closed() {
+		_, msg, err := s.conn.ReadMessage()
 		if err != nil {
-			log.Printf("Server: Unable to unmarshal server response: %v",
+			log.Printf("Server response: Unable to read from the server: %v", err)
+			return
+		}
+		resp, err := response.Unmarshal(string(msg))
+		if err != nil {
+			log.Printf("Server response: Unable to unmarshal server response: %v",
 				err)
 			continue
 		}
@@ -125,14 +122,10 @@ func (s *Server) handleResponses() {
 		if resp.Closed {
 			err := s.Close()
 			if err != nil {
-				log.Printf("Server: unable to close connection: %v",
+				log.Printf("Server response: unable to close connection: %v",
 					err)
 			}
 			return
 		}
-	}
-	if out.Err() != nil {
-		log.Printf("Server: Unable to read from the server: %v",
-			out.Err())
 	}
 }

@@ -80,11 +80,6 @@ func (s *Server) SetOnResponseFunc(f func(r response.Response)) {
 	s.onResponse = f
 }
 
-// Update sends an empty request to the server to trigger the update response.
-func (s *Server) Update() error {
-	return s.Send(request.Request{})
-}
-
 // Send sends specified request to the server.
 // If error will occure while writing data using server connection
 // then the server connection will be closed and error returned.

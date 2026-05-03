@@ -1,7 +1,7 @@
 /*
  * game.go
  *
- * Copyright 2021-2024 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2026 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@
 package ai
 
 import (
-	"log"
 	"sync"
 
 	"github.com/isangeles/flame"
@@ -75,11 +74,6 @@ func (g *Game) Characters() (chars []*Character) {
 func (g *Game) SetServer(server *Server) {
 	g.server = server
 	g.Server().SetOnResponseFunc(g.handleResponse)
-	err := g.Server().Update()
-	if err != nil {
-		log.Printf("Game: unable to send update request to the server: %v",
-			err)
-	}
 }
 
 // Server retruns game server.

@@ -1,7 +1,7 @@
 /*
  * config.go
  *
- * Copyright 2021-2025 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2026 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ var (
 	// Server.
 	ServerHost = ""
 	ServerPort = ""
+	ServerTLS  = false
 	UserID     = ""
 	UserPass   = ""
 	// Random actions frequences(in millis).
@@ -65,6 +66,9 @@ func Load() error {
 	if len(conf["server"]) > 1 {
 		ServerHost = conf["server"][0]
 		ServerPort = conf["server"][1]
+	}
+	if len(conf["server-tls"]) > 1 {
+		ServerTLS = conf["server-tls"][0] == "true"
 	}
 	if len(conf["user"]) > 1 {
 		UserID = conf["user"][0]

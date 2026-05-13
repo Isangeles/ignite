@@ -1,7 +1,7 @@
 /*
  * ignite.go
  *
- * Copyright 2021-2024 Dariusz Sikora <ds@isangeles.dev>
+ * Copyright 2021-2026 Dariusz Sikora <ds@isangeles.dev>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ func main() {
 		panic(fmt.Errorf("Unable to load config: %v", err))
 	}
 	// Connect to the server.
-	server, err = ai.NewServer(config.ServerHost, config.ServerPort)
+	server, err = ai.NewServer(config.ServerHost, config.ServerPort, config.ServerTLS)
 	if err != nil {
 		panic(fmt.Errorf("Unable to create game server connection: %v",
 			err))

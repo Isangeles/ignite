@@ -42,9 +42,14 @@ type Server struct {
 
 // NewServer creates new server connection struct with connection
 // to the server with specified host and port number.
-func NewServer(host, port string) (*Server, error) {
+// TLS switches between ws and wss protocols.
+func NewServer(host, port string, tls bool) (*Server, error) {
 	s := new(Server)
-	url := fmt.Sprintf("ws://%s:%s/", host, port)
+	protocol := "ws"
+	if tls {
+		protocol = "wss"
+	}
+	url := fmt.Sprintf("%s://%s:%s/", protocol, host, port)
 	conn, _, err := websocket.DefaultDialer.Dial(url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to dial server: %v", err)
